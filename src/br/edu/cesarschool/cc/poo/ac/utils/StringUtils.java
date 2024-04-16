@@ -12,4 +12,12 @@ public class StringUtils {
 			return false;
 		}	
 	}
+	public static boolean checarCaracteres(String stringRecebida) {
+        if (!isVaziaOuNula(stringRecebida) && stringRecebida.trim().length() >= 2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+	
 }
