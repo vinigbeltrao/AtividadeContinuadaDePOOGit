@@ -7,6 +7,5 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="D:/Programacao/eclipse/lib/PersistenciaObjetos.jar"/>
-	<classpathentry kind="lib" path="C:/Users/icaro/OneDrive/Área de Trabalho/PersistenciaObjetos.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -7,8 +7,8 @@ public class BilheteDAO {
 	private String obterIdUnico(Bilhete bilhete) {
 		return bilhete.gerarNumero();
 	}
-	public Bilhete buscar(String numeroBilhete) {		//XXXXXX Bilhete buscar
-		return (Bilhete)cadastro.buscar(numeroBilhete); //XXXXXX (Bilhete) cadastro
+	public Bilhete buscar(String numeroBilhete) {	
+		return (Bilhete)cadastro.buscar(numeroBilhete); 
 	}
 	/*
 	 * Objetos são incluídos em arquivos físicos, gravados

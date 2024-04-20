@@ -16,7 +16,7 @@ public class ClienteMediator {
 		if (!ValidadorCPF.isCpfValido(cliente.getCpf())) {
 			return "CPF errado";
 		}
-		if (!StringUtils.checarCaracteres(cliente.getNome())) {
+		if (!StringUtils.checarCaracteresCliente(cliente.getNome())) {
 			return "nome errado";
 		}
 		if (!(cliente.getSaldoPontos()>=0)) {
@@ -27,30 +27,30 @@ public class ClienteMediator {
 		}
 	}
 	public String incluir(Cliente cliente) {
-		if (validar(cliente)!=null) {
-			return null;				//CHECAR "RETURN NULL" ESTA ESCRITO "RETORNA-LA"???
-		}
-		else {
-			if (!clienteDAO.incluir(cliente)) {
-				return "Cliente ja existente";
-			}
-			else {
-				return null;
-			}
-		}
+		String resultadoValidacao = validar(cliente);
+        if (resultadoValidacao != null) {
+            return resultadoValidacao;
+        }
+        if (!clienteDAO.incluir(cliente)) {
+        	return "Cliente ja existente";
+        }
+			
+        return null;
+			
+		
 	}
 	public String alterar(Cliente cliente) {
-		if (validar(cliente)!=null) {
-			return null;				//CHECAR "RETURN NULL" ESTA ESCRITO "RETORNA-LA"???
+		String resultadoValidacao = validar(cliente);
+        if (resultadoValidacao != null) {
+            return resultadoValidacao;
+        }
+		if(!clienteDAO.alterar(cliente)) {
+			return "Cliente inexistente";
 		}
-		else {
-			if(!clienteDAO.alterar(cliente)) {
-				return "Cliente inexistente";
-			}
-			else {
-				return null;
-			}
-		}
+		
+		return null;
+			
+		
 	}
 	public String excluir(String cpf) {
 		if(!ValidadorCPF.isCpfValido(cpf)) {
