@@ -9,17 +9,6 @@ public class VooMediator {
 	public Voo buscar(String IdVoo) {
 		return vooDAO.buscar(IdVoo);
 	}
-	public String validarCiaNumero(String companhiaAerea, int numeroVoo) {
-		if (!StringUtils.checarCaracteresCIA(companhiaAerea)) {
-			return "CIA aerea errada";
-		}
-		if (numeroVoo > 0 && numeroVoo >= 1000 && numeroVoo <= 9999) {
-			return "Numero voo errado";
-		}
-		else {
-			return null;
-		}
-	}
 	
 	private static final String[] AEROPORTOS_VALIDOS = {
 	        "GRU", "CGH", "GIG", "SDU", "REC", "CWB", "POA", "BSB", "SSA", "FOR", "MAO", "SLZ", "CNF", 
@@ -38,11 +27,9 @@ public class VooMediator {
 			return "Aeroporto origem igual a aeroporto destino";
 		}
 		
-		validarCiaNumero(voo.getCompanhiaAerea(), voo.getNumeroVoo());
-		
-	        return null;
+		return validarCiaNumero(voo.getCompanhiaAerea(), voo.getNumeroVoo());	
 	    }
-	private boolean isAeroportoValido(String aeroporto) {
+	public boolean isAeroportoValido(String aeroporto) {
 		if (aeroporto != null) {
 			for (String valido : AEROPORTOS_VALIDOS) {
 				if (valido.equalsIgnoreCase(aeroporto.trim())) {
@@ -52,12 +39,25 @@ public class VooMediator {
 		}
 		return false;
 	}
+	public String validarCiaNumero(String companhiaAerea, int numeroVoo) {
+		if (companhiaAerea == null || companhiaAerea.length()!= 2) {
+			return "CIA aerea errada";
+    	}
+
+		if (!(numeroVoo >= 1000 && numeroVoo <= 9999)) {
+			return "Numero voo errado";
+		}
+		
+		return null;
+	}
 	
 	public String incluir(Voo voo) {
 		String resultadoValidacao = validar(voo);
+		
 		if (resultadoValidacao!=null) {
 			return resultadoValidacao;
 		}
+		
 		if(!vooDAO.incluir(voo)) {
 			return "Voo ja existente";
 		}

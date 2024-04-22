@@ -16,9 +16,9 @@ public class ClienteMediator {
 		if (!ValidadorCPF.isCpfValido(cliente.getCpf())) {
 			return "CPF errado";
 		}
-		if (!StringUtils.checarCaracteresCliente(cliente.getNome())) {
+		if (StringUtils.isVaziaOuNula(cliente.getNome()) || !(cliente.getNome().trim().length() >= 2)) {
 			return "nome errado";
-		}
+        }
 		if (!(cliente.getSaldoPontos()>=0)) {
 			return "saldo errado";
 		}

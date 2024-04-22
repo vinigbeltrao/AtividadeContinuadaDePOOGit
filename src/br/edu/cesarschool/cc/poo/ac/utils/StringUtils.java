@@ -21,12 +21,5 @@ public class StringUtils {
             return false;
         }
     }
-	public static boolean checarCaracteresCIA(String stringRecebida) {
-        if (!isVaziaOuNula(stringRecebida) && stringRecebida.trim().length() == 2) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 	
 }

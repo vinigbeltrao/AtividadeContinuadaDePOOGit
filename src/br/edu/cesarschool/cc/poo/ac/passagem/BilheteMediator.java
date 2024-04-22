@@ -25,11 +25,11 @@ public class BilheteMediator {
 		if(resultadoRecebido != null) {
 			return resultadoRecebido;
 		}
-		if(preco<=0) {
+		if(!(preco>0)) {
 			return "Preco errado";
 		}
-		if(pagamentoEmPontos<=0) {
-			return "PagamentoEmPontos errado";
+		if(!(pagamentoEmPontos>=0)) {
+			return "Pagamento pontos errado";
 		}
 		if(!(preco>=pagamentoEmPontos)) {
 			return "Preco menor que pagamento em pontos";
@@ -39,6 +39,7 @@ public class BilheteMediator {
         if (dataHora.isBefore(umaHoraNoFuturo)) {
             return "data hora invalida";
         }
+        
         return null;
 	}
 	public ResultadoGeracaoBilhete gerarBilhete(String cpf, String ciaAerea, int numeroVoo, double preco, double pagamentoEmPontos, LocalDateTime dataHora) {
@@ -64,15 +65,14 @@ public class BilheteMediator {
             return new ResultadoGeracaoBilhete(null, null, "Pontos insuficientes");
         }
 
-        int pontuacao = (int) pagamentoEmPontos;
-        cliente.debitarPontos((int) valorNecessarioPontos);
-        cliente.creditarPontos(pontuacao);
-
         Bilhete bilhete = new Bilhete(cliente, vooEncontrado, preco, pagamentoEmPontos, dataHora);
         boolean inclusaoSucesso = bilheteDAO.incluir(bilhete);
         if (!inclusaoSucesso) {
             return new ResultadoGeracaoBilhete(null, null, "Bilhete ja existente");
         }
+        
+        cliente.debitarPontos(valorNecessarioPontos);
+        cliente.creditarPontos(bilhete.obterValorPontuacao());
 
         String mensagemAlterarCliente = clienteMediator.alterar(cliente);
         if (mensagemAlterarCliente != null) {
@@ -109,15 +109,13 @@ public class BilheteMediator {
             return new ResultadoGeracaoBilhete(null, null, "Pontos insuficientes");
         }
 
-        int pontuacaoVip = (int) (bonusPontuacao * preco / 100);
-        cliente.debitarPontos((int) valorNecessarioPontos);
-        cliente.creditarPontos(pontuacaoVip);
-
         BilheteVip bilheteVip = new BilheteVip(cliente, vooEncontrado, preco, pagamentoEmPontos, dataHora, bonusPontuacao);
         boolean inclusaoSucesso = bilheteVipDAO.incluir(bilheteVip);
         if (!inclusaoSucesso) {
-            return new ResultadoGeracaoBilhete(null, null, "Bilhete vip ja existente");
+            return new ResultadoGeracaoBilhete(null, null, "Bilhete ja existente");
         }
+        cliente.debitarPontos(valorNecessarioPontos);
+        cliente.creditarPontos(bilheteVip.obterValorPontuacaoVip());
 
         String mensagemAlterarCliente = clienteMediator.alterar(cliente);
         if (mensagemAlterarCliente != null) {
